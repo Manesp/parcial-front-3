@@ -1,33 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-
+import CustomForm from './components/CustomForm'
+import Card from './components/Card'
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [show, setShow] = useState(false)
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    genero: ''
+  })
+  const [alert, setAlert] = useState("")
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setShow(false)
+    if (user.name[0] !== " " && user.name.length > 3 && user.email.length > 5) {
+      setShow(true)
+    } else {
+      setAlert("Por favor chequea que la información sea correcta")
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='app'>
+        <CustomForm setUser={setUser} setShow={setShow} handleSubmit={handleSubmit} />
+        {console.log(user, alert)}
+        {show ? <Card user={user} /> : <h2 style={{ color: "red" }}>{alert}</h2>}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
